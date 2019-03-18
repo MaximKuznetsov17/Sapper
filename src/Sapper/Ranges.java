@@ -23,7 +23,7 @@ public class Ranges {
         return size;
     }
 
-    public static List<Position> getAllPosition() {
+    public static List<Position> getAllPositions() {
         return allPosition;
     }
 

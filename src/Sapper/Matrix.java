@@ -5,7 +5,7 @@ class Matrix {
 
     Matrix (Box defaultBox) {
         matrix = new Box[Ranges.getSize().x][Ranges.getSize().y];
-        for(Position position : Ranges.getAllPosition()) {
+        for(Position position : Ranges.getAllPositions()) {
             matrix[position.x][position.y] = defaultBox;
         }
     }

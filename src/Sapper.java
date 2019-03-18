@@ -12,6 +12,7 @@ public class Sapper extends JFrame {
 
     private Game game;
     private JPanel panel;
+    private JLabel label;
     private final int COLUMNS = 9;
     private final int ROWS = 9;
     private final int BOMBS = 10;
@@ -25,8 +26,15 @@ public class Sapper extends JFrame {
         game = new Game(COLUMNS, ROWS, BOMBS);
         game.start();
         setImages();
+        initLabel();
         initPanel();
         initFrame();
+    }
+
+
+    private void initLabel () {
+        label = new JLabel("Good luck!!!");
+        add(label, BorderLayout.SOUTH);
     }
 
     private void initPanel() {
@@ -34,7 +42,7 @@ public class Sapper extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponents(g);
-                for (Position position : Ranges.getAllPosition())
+                for (Position position : Ranges.getAllPositions())
                     g.drawImage((Image) game.getBox(position).image,
                             position.x * IMAGE_SIZE, position.y * IMAGE_SIZE, this);
             }
@@ -48,6 +56,13 @@ public class Sapper extends JFrame {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     game.pressLeftButton(position);
                 }
+                if (e.getButton() == MouseEvent.BUTTON2) {
+                    game.start();
+                }
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    game.pressRightButton(position);
+                }
+                label.setText(getMessage());
                 panel.repaint();
             }
         });
@@ -55,14 +70,23 @@ public class Sapper extends JFrame {
         add(panel);
     }
 
+    private String getMessage() {
+        switch (game.getState()) {
+            case PLAYED: return "Think twice!";
+            case BOMBED: return "You lose!";
+            case WINNER: return "Congratulations!";
+            default: return "Welcome!";
+        }
+    }
+
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sapper");
-        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        setIconImage(getImage("icon"));
         pack();
+        setLocationRelativeTo(null);
+        setIconImage(getImage("icon"));
     }
 
     private void setImages() {
